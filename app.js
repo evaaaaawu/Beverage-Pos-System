@@ -32,6 +32,15 @@ orderLists.addEventListener('click', function (event) {
   beveragePos.deleteDrink(event.target.parentElement.parentElement.parentElement)
 })
 
+const checkoutButton = document.querySelector('[data-beverage-pos="checkout"')
+checkoutButton.addEventListener('click', function () {
+  // 1. calculate total amount
+  alert(`Total amount of drinks：$${beveragePos.checkout()}`)
+
+  // 2. reset the order list
+  beveragePos.clearOrder(orderLists)
+})
+
 // Constructor function for Beverage Pos System
 function BeveragePos() { }
 BeveragePos.prototype.getCheckedValue = function (inputName) {
@@ -59,7 +68,7 @@ BeveragePos.prototype.addDrink = function (drink) {
 
       <div class="card-footer text-right py-2">
         <div class="card-text text-muted">
-          $ <span data-drink-price></span>${drink.price()}</span>
+          $ <span data-drink-price>${drink.price()}</span>
         </div>
       </div>
     </div>
@@ -69,6 +78,20 @@ BeveragePos.prototype.addDrink = function (drink) {
 
 BeveragePos.prototype.deleteDrink = function (target) {
   target.remove()
+}
+
+BeveragePos.prototype.checkout = function () {
+  let totalAmount = 0
+  document.querySelectorAll('[data-drink-price]').forEach(function (drink) {
+    totalAmount += Number(drink.textContent)
+  })
+  return totalAmount
+}
+
+BeveragePos.prototype.clearOrder = function (target) {
+  target.querySelectorAll('.card').forEach(function (card) {
+    card.remove()
+  })
 }
 
 function Drink(name, sugar, ice) {
