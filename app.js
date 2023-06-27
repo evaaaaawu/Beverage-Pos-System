@@ -22,6 +22,16 @@ addDrinkButton.addEventListener('click', function () {
   beveragePos.addDrink(drink)
 })
 
+const orderLists = document.querySelector('[data-order-lists]')
+orderLists.addEventListener('click', function (event) {
+  let isDeleteButton = event.target.matches('[data-beverage-pos="delete-drink"]')
+  if (!isDeleteButton) {
+    return
+  }
+
+  beveragePos.deleteDrink(event.target.parentElement.parentElement.parentElement)
+})
+
 // Constructor function for Beverage Pos System
 function BeveragePos() { }
 BeveragePos.prototype.getCheckedValue = function (inputName) {
@@ -34,7 +44,6 @@ BeveragePos.prototype.getCheckedValue = function (inputName) {
   return selectedOption
 }
 
-const orderLists = document.querySelector('[data-order-lists]')
 BeveragePos.prototype.addDrink = function (drink) {
   let orderListsCard = `
     <div class="card mb-3">
@@ -56,6 +65,10 @@ BeveragePos.prototype.addDrink = function (drink) {
     </div>
   `
   orderLists.insertAdjacentHTML('afterbegin', orderListsCard)
+}
+
+BeveragePos.prototype.deleteDrink = function (target) {
+  target.remove()
 }
 
 function Drink(name, sugar, ice) {
